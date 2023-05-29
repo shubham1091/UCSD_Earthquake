@@ -110,7 +110,7 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
-	    int yellow = color(255, 255, 0);
+	    //int yellow = color(255, 255, 0);
 		
 		// TODO (Step 4): Add code below to style the marker's size and color 
 	    // according to the magnitude of the earthquake.  
@@ -122,7 +122,7 @@ public class EarthquakeCityMap extends PApplet {
 	    if(mag<THRESHOLD_LIGHT) {
 	    	marker.setColor(color(0,0,255));
 	    }else if(mag >= THRESHOLD_LIGHT && mag<THRESHOLD_MODERATE) {
-	    	marker.setColor(yellow);
+	    	marker.setColor(color(255, 255, 0));
 	    }else {
 	    	marker.setColor(color(255,0,0));
 	    }

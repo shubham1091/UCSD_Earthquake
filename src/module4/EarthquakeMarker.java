@@ -7,7 +7,7 @@ import processing.core.PGraphics;
 /** Implements a visual marker for earthquakes on an earthquake map
  * 
  * @author UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Kenneth
  *
  */
 public abstract class EarthquakeMarker extends SimplePointMarker
@@ -37,7 +37,9 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	public static final float THRESHOLD_DEEP = 300;
 
 	// ADD constants for colors
-
+	public static final float RED_COLOR = 255;
+	public static final float GREEN_COLOR = 255;
+	public static final float BLUE_COLOR = 255;
 	
 	// abstract method implemented in derived classes
 	public abstract void drawEarthquake(PGraphics pg, float x, float y);
@@ -68,21 +70,36 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		drawEarthquake(pg, x, y);
 		
 		// OPTIONAL TODO: draw X over marker if within past day		
-		
+		String age = getStringProperty("age");
+		if(age.equals("Past Day")) {
+			pg.stroke(0);
+			pg.strokeWeight(2);
+			pg.line(x + radius, y - radius, x - radius, y + radius);
+			pg.line(x - radius, y - radius, x + radius, y + radius);
+		}
 		// reset to previous styling
 		pg.popStyle();
 		
 	}
 	
-	// determine color of marker from depth, and set pg's fill color 
-	// using the pg.fill method.
+	// determine color of marker from depth
 	// We suggest: Deep = red, intermediate = blue, shallow = yellow
 	// But this is up to you, of course.
 	// You might find the getters below helpful.
 	private void colorDetermine(PGraphics pg) {
 		//TODO: Implement this method
+		if(getDepth() > 0 && getDepth() <= THRESHOLD_INTERMEDIATE) { //shallow quakes
+			pg.fill(RED_COLOR, GREEN_COLOR, 0);
+		} else if(getDepth() > THRESHOLD_INTERMEDIATE && getDepth() <= THRESHOLD_DEEP) { //intermediate quakes
+			pg.fill(0, 0, BLUE_COLOR);
+		} else { //deep quakes
+			pg.fill(RED_COLOR, 0 , 0);
+		}
 	}
 	
+	public float setMarkerSize() {
+		return getRadius() + getMagnitude();
+	}
 	
 	/*
 	 * getters for earthquake properties
