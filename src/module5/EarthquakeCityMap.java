@@ -13,6 +13,7 @@ import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
+import de.fhpotsdam.unfolding.providers.Microsoft;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
@@ -70,7 +71,7 @@ public class EarthquakeCityMap extends PApplet {
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 650, 600, new Microsoft.HybridProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -146,6 +147,22 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		if(lastSelected!=null)
+		{
+			return;
+		}
+		
+			for(Marker marker:markers)
+			{
+				if(marker.isInside(map,mouseX,mouseY))
+				{
+					lastSelected=(CommonMarker)marker;
+					marker.setSelected(true);
+					return;
+				}
+			}
+		
+		
 	}
 	
 	/** The event handler for mouse clicks
@@ -159,8 +176,78 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+			if(lastClicked !=null)
+			{
+				this.unhideMarkers();
+				lastClicked=null;
+			}
+			
+			else
+			{
+				selectEarthquake();
+				selectCity();
+			}
 	}
-	
+	public void selectEarthquake()
+	{
+		if(lastClicked!=null)
+		{
+			return;
+		}
+		for(Marker qm:quakeMarkers)
+		{
+			EarthquakeMarker em=(EarthquakeMarker)qm;
+			if(!em.isHidden() && em.isInside(map,mouseX,mouseY))
+			{
+				lastClicked=em;
+			
+			//and hide all other markers
+			for(Marker qmarker:quakeMarkers)
+			{
+				if(qmarker!=lastClicked)
+				{
+					qmarker.setHidden(true);
+				}
+			}
+			for(Marker cmarker:cityMarkers)
+			{
+				if(cmarker.getDistanceTo(em.getLocation()) > em.threatCircle())
+				{
+					cmarker.setHidden(true);
+				}
+			}
+			return;
+			}
+		}
+	}
+	public void selectCity()
+	{
+		if(lastClicked!=null)
+			return;
+		for(Marker cmarker:cityMarkers)
+		{
+			if(!cmarker.isHidden() && cmarker.isInside(map, mouseX, mouseY))
+			{
+				lastClicked=(CommonMarker)cmarker;
+			
+			//hide all other city and quake markers
+			for(Marker chide:cityMarkers)
+			{
+				if(chide!=lastClicked)
+					chide.setHidden(true);
+			}
+			for(Marker qhide:quakeMarkers)
+			{
+				EarthquakeMarker quakehide=(EarthquakeMarker)qhide;
+				if(quakehide.getDistanceTo(cmarker.getLocation()) > quakehide.threatCircle())
+				{
+					quakehide.setHidden(true);
+				}
+			}
+		}
+			return;
+		}
+	}
 	
 	// loop over and unhide all markers
 	private void unhideMarkers() {

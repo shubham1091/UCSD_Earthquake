@@ -36,11 +36,12 @@ public abstract class CommonMarker extends SimplePointMarker {
 	// Common piece of drawing method for markers; 
 	// Note that you should implement this by making calls 
 	// drawMarker and showTitle, which are abstract methods 
-	// implemented in subclasses
+	// implemented in subclasse
 	public void draw(PGraphics pg, float x, float y) {
 		// For starter code just drawMaker(...)
 		if (!hidden) {
 			drawMarker(pg, x, y);
+			//System.out.println(selected);
 			if (selected) {
 				showTitle(pg, x, y);  // You will implement this in the subclasses
 			}
