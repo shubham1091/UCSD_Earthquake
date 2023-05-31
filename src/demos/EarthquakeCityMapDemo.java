@@ -144,14 +144,15 @@ public class EarthquakeCityMapDemo extends PApplet {
 	    int yellow = color(255, 255, 0);
 	    int gray = color(150,150,150);
 	    
-	    for (Marker mk :markers) {
-	    	if ( (int) mk.getProperty("year") > 2000 ) {
-	    		mk.setColor(yellow);
-	    	}
-	    	else {
-	    		mk.setColor(gray);
-	    	}
+	    for (Marker mk : markers) {
+	        int year = Integer.parseInt((String) mk.getProperty("year"));
+	        if (year > 2000) {
+	            mk.setColor(yellow);
+	        } else {
+	            mk.setColor(gray);
+	        }
 	    }
+
 //	    
 	    
 	    //List<Marker> markers = new ArrayList<Marker>();

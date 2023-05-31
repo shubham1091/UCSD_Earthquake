@@ -9,7 +9,6 @@ import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.data.ShapeFeature;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimpleLinesMarker;
-import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import de.fhpotsdam.unfolding.geo.Location;
 import parsing.ParseFeed;
@@ -23,6 +22,10 @@ import processing.core.PApplet;
  */
 public class AirportMap extends PApplet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -337944951409303123L;
 	UnfoldingMap map;
 	private List<Marker> airportList;
 	List<Marker> routeList;
